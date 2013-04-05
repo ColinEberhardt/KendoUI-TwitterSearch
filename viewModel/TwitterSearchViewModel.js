@@ -50,7 +50,7 @@ var twitterSearchViewModel = kendo.observable({
       this.recentSearches.unshift({ searchString: this.searchTerm });
 
       // limit to 5 recent search terms
-      if (this.recentSearches.length > 5) {
+      while (this.recentSearches.length > 5) {
         this.recentSearches.pop();
       }
 
