@@ -8,7 +8,7 @@ var twitterSearchViewModel = kendo.observable({
   /// </summary>
 
   // --- properties
-  searchTerm: "#kendo",
+  searchTerm: "#kendoui",
   isSearching: false,
   userMessage: "",
   searchEnabled: false,
@@ -17,8 +17,7 @@ var twitterSearchViewModel = kendo.observable({
     return this.get("recentSearches").length > 0;
   },
   searchButtonDisabled: function () {
-    console.log("feck");
-    return this.get("searchTerm").length == 0;
+    return this.get("searchTerm").length === 0 && this.get("isSearching") === false;
   },
   
   // --- 'private' functions

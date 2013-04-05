@@ -37,8 +37,8 @@
       <form data-bind="events: { submit: executeSearch }">
         <input type="search" data-bind="value: searchTerm" data-value-update="keyup"
               class="search-box"/>
-        <button type="submit" class="full-width-button"
-            data-bind="click: executeSearch, { disabled: searchButtonDisabled }">Go</button>  
+        <a data-role="button" class="full-width-button"
+            data-bind="click: executeSearch, { disabled: searchButtonDisabled }">Go</a>  
       </form>
       
       <p class="userMessage" data-bind="visible: isSearching">
