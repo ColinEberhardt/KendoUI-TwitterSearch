@@ -2,44 +2,44 @@
 
 var twitterSearchService = new TwitterSearchService();
 
-var twitterSearchViewModel = kendo.observable({
+TwitterSearchViewModel = function() {
   /// <summary>
   /// A view model for searching twitter for a given term
   /// </summary>
 
   // --- properties
-  searchTerm: "#kendoui",
-  isSearching: false,
-  userMessage: "",
-  searchEnabled: false,
-  recentSearches: [],
-  recentSearchTitleVisible: function () {
+  this.searchTerm = "#kendoui";
+  this.isSearching = false;
+  this.userMessage = "";
+  this.searchEnabled = false;
+  this.recentSearches = [];
+
+  this.recentSearchTitleVisible = function () {
     return this.get("recentSearches").length > 0;
-  },
-  searchButtonDisabled: function () {
+  };
+  this.searchButtonDisabled = function () {
     return this.get("searchTerm").length === 0 && this.get("isSearching") === false;
-  },
+  };
   
   // --- 'private' functions
 
-  _saveState: function () {
+  function saveState() {
     /// <summary>
     /// Saves the view model state to local storage
     /// </summary>
-    var recentSearchStrings = this.recentSearches.toJSON().map(function (item) {
+    var recentSearchStrings = that.recentSearches.toJSON().map(function (item) {
       return item.searchString;
     });
     localStorage.setItem("state", recentSearchStrings.toString());
-  },
+  };
 
-  _addSearchTermToRecentSearches: function () {
+  function addSearchTermToRecentSearches() {
     /// <summary>
     /// Adds the current search term to the search history
     /// </summary>
 
     // check whether we already have this item in our recent searches list
-    var that = this;
-    var matches = $.grep(this.recentSearches, function (recentSearchTerm) {
+    var matches = $.grep(that.recentSearches, function (recentSearchTerm) {
       return recentSearchTerm.searchString === that.searchTerm;
     });
 
@@ -47,19 +47,19 @@ var twitterSearchViewModel = kendo.observable({
     if (matches.length === 0) {
 
       // add the new item
-      this.recentSearches.unshift({ searchString: this.searchTerm });
+      that.recentSearches.unshift({ searchString: that.searchTerm });
 
       // limit to 5 recent search terms
-      while (this.recentSearches.length > 5) {
-        this.recentSearches.pop();
+      while (that.recentSearches.length > 5) {
+        that.recentSearches.pop();
       }
 
-      this._saveState();
+      saveState();
     }
-  },
+  }
 
   // --- functions
-  executeSearch: function () {
+  this.executeSearch = function () {
     /// <summary>
     /// Searches twitter for the current search term.
     /// </summary>
@@ -71,11 +71,10 @@ var twitterSearchViewModel = kendo.observable({
     this.set("userMessage", "");
     this.set("isSearching", true);
 
-    var that = this;
     twitterSearchService.searchForKeyword(this.searchTerm, 1, function (tweets) {
       if (tweets.length > 0) {
         // store this search
-        that._addSearchTermToRecentSearches();
+        addSearchTermToRecentSearches();
 
         // navigate to the results view model
         searchResultsViewModel.init(that.searchTerm, tweets);
@@ -86,15 +85,14 @@ var twitterSearchViewModel = kendo.observable({
 
       that.set("isSearching", false);
     });
-  },
+  }
 
-  loadState: function () {
+  this.loadState = function () {
     /// <summary>
     /// Loads the persisted view model state from local storage
     /// </summary>
 
-    var that = this,
-        state = localStorage.getItem("state");
+    var state = localStorage.getItem("state");
 
     if (typeof (state) === 'string') {
       $.each(state.split(","), function (index, item) {
@@ -105,7 +103,7 @@ var twitterSearchViewModel = kendo.observable({
     }
   },
 
-  recentSearchClicked: function (e) {
+  this.recentSearchClicked = function (e) {
     /// <summary>
     /// Handles clicks on recent search terms.
     /// </summary>
@@ -113,6 +111,9 @@ var twitterSearchViewModel = kendo.observable({
     this.set("searchTerm", selectedSearchTerm);
     this.executeSearch();
   }
-});
+
+  var that = kendo.observable(this);
+  return that;
+};
 
  
