@@ -1,9 +1,11 @@
-﻿/*globals ko*/
+﻿/*globals kendo */
 
 function TweetViewModel() {
   /// <summary>
   /// A view model that represents a single tweet
   /// </summary>
+
+  var that;
 
   // --- properties
   this.author = "";
@@ -43,13 +45,13 @@ function TweetViewModel() {
 
   // --- public functions
 
-  this.init = function(tweet) {
+  this.init = function (tweet) {
     this.set("author", tweet.author);
     this.set("text", tweet.text);
     this.set("time", parseDate(tweet.time));
     this.set("thumbnail", tweet.thumbnail);
-  }
+  };
 
-  var that = kendo.observable(this);
+  that = kendo.observable(this);
   return that;
-};
+}

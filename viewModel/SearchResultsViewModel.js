@@ -1,9 +1,11 @@
-﻿/*globals $, ko, TwitterSearchService, tweetViewModel*/
+﻿/*globals $, kendo, twitterSearchService, tweetViewModel, app*/
 
 function SearchResultsViewModel() {
   /// <summary>
   /// A view model that renders the results of a twitter search.
   /// </summary>
+
+  var that;
 
   // --- properties
   this.tweets = [];
@@ -17,7 +19,7 @@ function SearchResultsViewModel() {
     this.set("tweets", tweetViewModels);
     this.set("pageNumber", 1);
     this.set("searchString", searchText);
-  }
+  };
 
   this.loadMore = function () {
     this.set("pageNumber", this.pageNumber + 1);
@@ -27,7 +29,7 @@ function SearchResultsViewModel() {
     twitterSearchService.searchForKeyword(this.searchString, this.pageNumber, function (tweets) {
       that.set("isSearching", false);
       that.set("loadMoreText", "Load more ...");
-      
+
       // add the new batch of tweets
       if (tweets.length > 0) {
         $.each(tweets, function (index, tweet) {
@@ -35,14 +37,14 @@ function SearchResultsViewModel() {
         });
       }
     });
-  }
+  };
 
   this.tweetClicked = function (e) {
     // navigate to the tweet
     tweetViewModel.init(e.dataItem);
     app.navigate("#tweetView");
-  }
+  };
 
-  var that = kendo.observable(this);
+  that = kendo.observable(this);
   return that;
 }

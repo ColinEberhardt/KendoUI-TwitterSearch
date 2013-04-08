@@ -1,11 +1,12 @@
-﻿/*globals $, kendo */
+﻿/*globals $, kendo, TwitterSearchService, localStorage, searchResultsViewModel, app */
 
-var twitterSearchService = new TwitterSearchService();
-
-TwitterSearchViewModel = function() {
+function TwitterSearchViewModel() {
   /// <summary>
   /// A view model for searching twitter for a given term
   /// </summary>
+
+  var that,
+      twitterSearchService = new TwitterSearchService();
 
   // --- properties
   this.searchTerm = "#kendoui";
@@ -20,7 +21,7 @@ TwitterSearchViewModel = function() {
   this.searchButtonDisabled = function () {
     return this.get("searchTerm").length === 0 && this.get("isSearching") === false;
   };
-  
+
   // --- 'private' functions
 
   function saveState() {
@@ -31,7 +32,7 @@ TwitterSearchViewModel = function() {
       return item.searchString;
     });
     localStorage.setItem("state", recentSearchStrings.toString());
-  };
+  }
 
   function addSearchTermToRecentSearches() {
     /// <summary>
@@ -85,7 +86,7 @@ TwitterSearchViewModel = function() {
 
       that.set("isSearching", false);
     });
-  }
+  };
 
   this.loadState = function () {
     /// <summary>
@@ -101,7 +102,7 @@ TwitterSearchViewModel = function() {
         }
       });
     }
-  },
+  };
 
   this.recentSearchClicked = function (e) {
     /// <summary>
@@ -110,10 +111,10 @@ TwitterSearchViewModel = function() {
     var selectedSearchTerm = e.dataItem.searchString;
     this.set("searchTerm", selectedSearchTerm);
     this.executeSearch();
-  }
+  };
 
-  var that = kendo.observable(this);
+  that = kendo.observable(this);
   return that;
-};
+}
 
  

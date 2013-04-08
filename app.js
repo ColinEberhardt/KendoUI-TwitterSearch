@@ -1,4 +1,4 @@
-/*globals kendo */
+/*globals kendo, document, TwitterSearchViewModel, SearchResultsViewModel, TweetViewModel  */
 
 // create the mobile app
 var app = new kendo.mobile.Application(document.body);
