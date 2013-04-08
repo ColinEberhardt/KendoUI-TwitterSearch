@@ -1,30 +1,29 @@
 ﻿/*globals $, ko, TwitterSearchService, tweetViewModel*/
 
-var searchResultsViewModel = kendo.observable({
+function SearchResultsViewModel() {
   /// <summary>
   /// A view model that renders the results of a twitter search.
   /// </summary>
 
   // --- properties
-  tweets : [],
-  isSearching : false,
-  pageNumber : 1,
-  loadMoreText : "Load more ...",
-  searchString : "",
+  this.tweets = [];
+  this.isSearching = false;
+  this.pageNumber = 1;
+  this.loadMoreText = "Load more ...";
+  this.searchString = "";
 
   // --- public functions
-  init : function (searchText, tweetViewModels) {
+  this.init = function (searchText, tweetViewModels) {
     this.set("tweets", tweetViewModels);
     this.set("pageNumber", 1);
     this.set("searchString", searchText);
-  },
+  }
 
-  loadMore : function () {
+  this.loadMore = function () {
     this.set("pageNumber", this.pageNumber + 1);
     this.set("isSearching", true);
     this.set("loadMoreText", "Loading ...");
 
-    var that = this;
     twitterSearchService.searchForKeyword(this.searchString, this.pageNumber, function (tweets) {
       that.set("isSearching", false);
       that.set("loadMoreText", "Load more ...");
@@ -36,12 +35,14 @@ var searchResultsViewModel = kendo.observable({
         });
       }
     });
-  },
+  }
 
-  tweetClicked : function (e) {
+  this.tweetClicked = function (e) {
     // navigate to the tweet
     tweetViewModel.init(e.dataItem);
     app.navigate("#tweetView");
   }
 
-});
+  var that = kendo.observable(this);
+  return that;
+}

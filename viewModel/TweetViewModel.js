@@ -1,18 +1,18 @@
 ﻿/*globals ko*/
 
-var tweetViewModel = kendo.observable({
+function TweetViewModel() {
   /// <summary>
   /// A view model that represents a single tweet
   /// </summary>
 
   // --- properties
-  author : "",
-  text : "",
-  time : "",
-  thumbnail : "",
+  this.author = "";
+  this.text = "";
+  this.time = "";
+  this.thumbnail = "";
 
   // --- private functions
-  _parseDate : function(date) {
+  function parseDate(date) {
     /// <summary>
     /// Parses the tweet date to give a more readable format.
     /// </summary>
@@ -39,15 +39,17 @@ var tweetViewModel = kendo.observable({
     }
 
     return diff.toFixed(0) + " days ago";
-  },
+  }
 
   // --- public functions
 
-  init: function(tweet) {
+  this.init = function(tweet) {
     this.set("author", tweet.author);
     this.set("text", tweet.text);
-    this.set("time", this._parseDate(tweet.time));
+    this.set("time", parseDate(tweet.time));
     this.set("thumbnail", tweet.thumbnail);
   }
 
-});
+  var that = kendo.observable(this);
+  return that;
+};
