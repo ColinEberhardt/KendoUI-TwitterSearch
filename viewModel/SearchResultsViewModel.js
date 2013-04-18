@@ -5,7 +5,8 @@ function SearchResultsViewModel() {
   /// A view model that renders the results of a twitter search.
   /// </summary>
 
-  var that;
+  var that,
+	twitterSearchService = new TwitterSearchService();
 
   // --- properties
   this.tweets = [];
